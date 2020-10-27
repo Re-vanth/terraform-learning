@@ -55,7 +55,7 @@ resource "aws_route_table" "test-routetable1" {
 resource "aws_subnet" "test-subnet1"{
     vpc_id = aws_vpc.test-vpc1.id
     cidr_block = "10.0.0.0/24"
-    availability_zone = "ap-south-1a"
+    availability_zone = var.availability_zone_aws  
 
     tags = {
         Name = "aws test subnet1"
@@ -145,7 +145,7 @@ resource "aws_eip" "test-elasticip1" {
 resource "aws_instance" "web-server-instance" {
     ami = "ami-03f0fd1a2ba530e75"
     instance_type = "t2.micro"
-    availability_zone = "ap-south-1a"
+    availability_zone = var.availability_zone_aws 
     key_name = "revanth_aws" #NAME OF THE KEY USED TO CONNECT TO THE INSTANCE
 
     network_interface {
@@ -166,4 +166,9 @@ resource "aws_instance" "web-server-instance" {
     tags = {
         Name = "test web server"
     }
+}
+
+
+output "server_public_ip" {
+  value = aws_eip.test-elasticip1.public_ip
 }
